@@ -1,0 +1,15 @@
+### Directories ###
+bin/
+obj/
+
+### Files ###
+appsettings.json
+
+### NuGet Packages ###
+packages/
+
+### Log files ###
+logs/
+
+### Visual Studio Code settings ###
+.vscode/
