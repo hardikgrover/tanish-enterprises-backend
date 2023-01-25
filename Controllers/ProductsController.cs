@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using tanish_enterprises_backend.Models;
 using TanishEnterprisesBackend.Models;
 using TanishEnterprisesBackend.Services;
 
@@ -18,7 +19,7 @@ namespace TanishEnterprisesBackend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetAllAsync()
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetAllAsync()
         {
             var products = await _productService.GetAllAsync();
             return Ok(products);

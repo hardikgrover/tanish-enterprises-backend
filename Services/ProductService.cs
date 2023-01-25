@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using tanish_enterprises_backend.Models;
 using TanishEnterprisesBackend.Models;
 using TanishEnterprisesBackend.Repositories;
 
@@ -14,9 +15,12 @@ namespace TanishEnterprisesBackend.Services
             _productRepository = productRepository;
         }
 
-        public async Task<List<Product>> GetAllAsync()
+        public async Task<ServiceResponse<List<Product>>> GetAllAsync()
         {
-            return await _productRepository.GetAllAsync();
+            var serviceResponse = new ServiceResponse<List<Product>>();
+            var products = await _productRepository.GetAllAsync();
+            serviceResponse.Data = products.ToList();
+            return serviceResponse;
         }
 
         public async Task<Product> GetByIdAsync(int id)

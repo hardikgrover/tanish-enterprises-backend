@@ -1,22 +1,33 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using tanish_enterprises_backend.Data;
 using TanishEnterprisesBackend.Models;
 
 namespace TanishEnterprisesBackend.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private List<Product> _products;
+        private List<Product> _products = new List<Product>
+    {
+        new Product { Id = 1, Name = "Product 1", Description = "Description of Product 1", Price = 10.99m },
+        new Product { Id = 2, Name = "Product 2", Description = "Description of Product 2", Price = 12.99m },
+        new Product { Id = 3, Name = "Product 3", Description = "Description of Product 3", Price = 14.99m }
+    };
+
+    private readonly TanishEnterprisesDbContext _context;
 
 
-        public ProductRepository()
+        public ProductRepository(TanishEnterprisesDbContext context)
         {
-            _products = new List<Product> { new Product { Id = 1, Description = "Product 1", Price = 19.99m, CreatedAt = DateTime.Now } };
+            _context = context;
         }
 
-        public Task<List<Product>> GetAllAsync()
+        public async Task<List<Product>> GetAllAsync()
         {
-            return Task.FromResult(_products);
+            var products = await _context.Products.ToListAsync();
+
+            return products;
         }
 
         public Task<Product> GetByIdAsync(int id)
@@ -24,10 +35,13 @@ namespace TanishEnterprisesBackend.Repositories
             return Task.FromResult(_products.Find(p => p.Id == id));
         }
 
-        public Task AddAsync(Product product)
+        public async Task<bool> AddAsync(Product product)
         {
-            _products.Add(product);
-            return Task.CompletedTask;
+            await _context.Products.AddAsync(product);
+        var created = await _context.SaveChangesAsync();
+              return created > 0;
+            // _products.Add(product);
+            // return Task.CompletedTask;
         }
 
         public Task UpdateAsync(Product product)
